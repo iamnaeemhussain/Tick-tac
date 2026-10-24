@@ -1,0 +1,32 @@
+{
+  "name": "tick-tac-arena",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fast, shareable, server-authoritative Tic-Tac-Toe on Cloudflare Workers + Durable Objects. No accounts, no permanent storage.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p worker/tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "node scripts/smoke.mjs",
+    "loadtest": "node loadtest/loadtest.mjs",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-dev": "wrangler dev --ip 0.0.0.0 --port 8787"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261024.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.152.0"
+  }
+}

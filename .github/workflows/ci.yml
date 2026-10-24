@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'arena/**']
+  pull_request:
+
+jobs:
+  test:
+    name: Typecheck + unit tests + build + integration smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck (frontend + worker)
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build SPA
+        run: npm run build
+
+      - name: Start local Cloudflare stack
+        run: |
+          npx wrangler dev --ip 127.0.0.1 --port 8787 --inspector-port 9229 > /tmp/wrangler.log 2>&1 &
+          echo $! > /tmp/wrangler.pid
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:8787/api/health > /dev/null; then
+              echo "worker ready"; exit 0
+            fi
+            sleep 1
+          done
+          echo "worker failed to start"; tail -40 /tmp/wrangler.log; exit 1
+
+      - name: Integration smoke (REST + WebSockets)
+        run: npm run smoke
+
+      - name: Stop worker
+        if: always()
+        run: kill $(cat /tmp/wrangler.pid) || true

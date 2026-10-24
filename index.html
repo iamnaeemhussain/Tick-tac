@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+		<!-- Primary SEO -->
+		<title>Tick-Tac Arena — Instant Online Tic-Tac-Toe with Friends</title>
+		<meta
+			name="description"
+			content="Play Tic-Tac-Toe online instantly. Challenge a friend with a shareable link or face the computer at three difficulty levels. No sign-up, no downloads, no waiting — just unlimited rematches."
+		/>
+		<link rel="canonical" href="https://ticktacarena.example/" />
+
+		<!-- Open Graph / WhatsApp / social sharing -->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Tick-Tac Arena" />
+		<meta property="og:title" content="Tick-Tac Arena — Instant Online Tic-Tac-Toe" />
+		<meta
+			property="og:description"
+			content="Challenge a friend with a link or play vs the computer. No sign-up, no downloads — unlimited rematches."
+		/>
+		<meta property="og:image" content="/og.png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:url" content="https://ticktacarena.example/" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Tick-Tac Arena — Instant Online Tic-Tac-Toe" />
+		<meta
+			name="twitter:description"
+			content="Challenge a friend with a link or play vs the computer. No sign-up, no downloads."
+		/>
+		<meta name="twitter:image" content="/og.png" />
+
+		<!-- Branding & theming -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<meta name="theme-color" content="#0f1230" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#f4f5fb" media="(prefers-color-scheme: light)" />
+
+		<!-- Structured data -->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "VideoGame",
+				"name": "Tick-Tac Arena",
+				"description": "Instant online Tic-Tac-Toe. Play with a friend through a shareable link or against the computer at three difficulty levels. No accounts, no downloads.",
+				"genre": ["Board Game", "Casual Game", "Puzzle Game"],
+				"gamePlatform": "Web browser",
+				"applicationCategory": "Game",
+				"operatingSystem": "Any",
+				"offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+				"numberOfPlayers": "1-2"
+			}
+		</script>
+
+		<!-- Set theme before first paint to avoid a flash -->
+		<script>
+			(function () {
+				try {
+					var p = JSON.parse(localStorage.getItem('tta.prefs') || 'null');
+					var t = p && p.theme ? p.theme : window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+					document.documentElement.setAttribute('data-theme', t);
+				} catch (e) {
+					document.documentElement.setAttribute('data-theme', 'dark');
+				}
+			})();
+		</script>
+	</head>
+	<body>
+		<div id="root">
+			<!-- Crawlable, no-JS fallback content (replaced by the app on load) -->
+			<noscript>
+				<main style="font-family: system-ui; max-width: 40rem; margin: 4rem auto; padding: 0 1rem">
+					<h1>Tick-Tac Arena — Instant Online Tic-Tac-Toe</h1>
+					<p>
+						Tick-Tac Arena is a fast, free, mobile-friendly Tic-Tac-Toe game. Play with a friend through a
+						shareable invite link, or challenge the computer at Easy, Medium and Hard difficulty. No
+						accounts, no downloads, no permanent storage — games and names vanish when the room ends.
+					</p>
+					<p>JavaScript is required to play. Please enable it and reload.</p>
+				</main>
+			</noscript>
+		</div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
+</html>

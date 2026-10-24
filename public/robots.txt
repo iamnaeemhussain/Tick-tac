@@ -1,0 +1,10 @@
+# Tick-Tac Arena
+# Only the public homepage is crawlable. Private room links (/room/*) are
+# temporary, invite-only spaces and must never be indexed or archived —
+# they also send X-Robots-Tag: noindex, nofollow, noarchive at the edge.
+User-agent: *
+Allow: /$
+Allow: /favicon.svg
+Allow: /og.png
+Disallow: /room/
+Disallow: /api/
