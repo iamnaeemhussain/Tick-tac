@@ -1,0 +1,50 @@
+{
+	// ─────────────────────────────────────────────────────────────
+	// Tick-Tac Arena — single Cloudflare Worker deployment
+	//   • Serves the built React SPA from ./dist (edge-cached static assets)
+	//   • Exposes a small JSON + WebSocket API under /api/*
+	//   • Multiplayer rooms live in the RoomDO Durable Object class.
+	//     Rooms keep state IN MEMORY ONLY — nothing is ever written to
+	//     durable storage (no game data, names, or history is persisted).
+	//     Storage alarms are used solely as a guaranteed cleanup timer.
+	// ─────────────────────────────────────────────────────────────
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "tick-tac-arena",
+	"main": "worker/index.ts",
+	"compatibility_date": "2026-10-01",
+
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+		// Note: no not_found_handling here on purpose — unmatched paths
+		// (e.g. /api/*, /room/*) fall through to the Worker, which handles
+		// the API and the SPA fallback for room links.
+	},
+
+	"durable_objects": {
+		"bindings": [
+			{ "name": "ROOMS", "class_name": "RoomDO" },
+			{ "name": "LIMITERS", "class_name": "LimiterDO" }
+		]
+	},
+
+	// SQLite-backed classes (required for Workers Free plan compatibility;
+	// these classes never call storage.put/get — only setAlarm/deleteAlarm).
+	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["RoomDO", "LimiterDO"] }],
+
+	"vars": {
+		// How long a room survives without game activity (seconds).
+		"ROOM_TTL_SECONDS": "1800",
+		// How long a disconnected player has to reconnect (seconds).
+		"GRACE_SECONDS": "60",
+		// Abuse controls (per IP, sliding 10-minute window).
+		"CREATE_LIMIT_PER_10MIN": "10",
+		"JOIN_LIMIT_PER_10MIN": "30"
+	},
+
+	"observability": {
+		"enabled": true
+		// We never console.log names, board contents, tokens or room codes,
+		// so platform logs contain only aggregate operational metadata.
+	}
+}
